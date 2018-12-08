@@ -36,9 +36,18 @@ public class ManageConnectionThread extends Thread{
     }
     public void run(){
         Log.i("BluetoothTest", "ManageConnectionThread_run");
+        write();
 
     }
     public void write(){
+
+        try {
+            byte[] temp = "test".getBytes();
+            mOutputStream.write(temp);
+            Log.i("BluetoothTest", temp[0] + " " + temp[1] + " " + temp[2]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 }

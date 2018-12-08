@@ -13,6 +13,7 @@ import android.util.Log;
 import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements BluetoothConnectionEvent{
+
     BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     @Override
@@ -20,16 +21,22 @@ public class MainActivity extends AppCompatActivity implements BluetoothConnecti
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
 
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
             for (BluetoothDevice device : pairedDevices) {
                 String deviceName = device.getName();
                 String deviceHardwareAddress = device.getAddress(); // MAC address
+                if(deviceName.equals("HC-05")){
+                    Log.i("BluetoothTest", "Found: " + deviceName);
+                    bluetoothAdapter.cancelDiscovery();
+                    BluetoothConnectThread bluetoothConnectThread = new BluetoothConnectThread(device, MainActivity.this);
+                    bluetoothConnectThread.start();
+                }
             }
-        }*/
-        bluetoothAdapter.startDiscovery();
+        }
+        /*bluetoothAdapter.startDiscovery();
 
         // Register for broadcasts when a device is discovered.
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -54,14 +61,14 @@ public class MainActivity extends AppCompatActivity implements BluetoothConnecti
                 }
 
             }
-        }
-    };
+        }*/
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         // Don't forget to unregister the ACTION_FOUND receiver.
-        unregisterReceiver(mReceiver);
+        //unregisterReceiver(mReceiver);
     }
 
     @Override
